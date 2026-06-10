@@ -258,7 +258,7 @@
     </div>
 
     <script>
-        const API_BASE_URL = 'http://localhost:8000';
+        const API_BASE_URL = 'https://chatapp-m9lo.onrender.com';
         const messagesContainer = document.getElementById('messagesContainer');
         const chatForm = document.getElementById('chatForm');
         const userInput = document.getElementById('userInput');
@@ -394,10 +394,10 @@
             try {
                 const response = await fetch(`${API_BASE_URL}/api/health`);
                 if (!response.ok) {
-                    showError('Backend is not responding. Make sure the server is running on http://localhost:8000');
+                    showError('Backend is not responding. Make sure the server is running on onrender.com');
                 }
             } catch (error) {
-                showError('Cannot connect to backend. Make sure the server is running on http://localhost:8000');
+                showError('Cannot connect to backend. Make sure the server is running on onrender.com');
             }
         });
     </script>
