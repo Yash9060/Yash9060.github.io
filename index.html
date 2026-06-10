@@ -1,712 +1,405 @@
-<!-- Home Page -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>USC Dornsife</title>
-<meta name="description" content="">
-<meta name="author" content="">
-<!-- Favicons
-    ================================================== -->
-<link rel="shortcut icon" type="image/x-icon" href="img/favicon.ico"/>
-<link rel="apple-touch-icon" href="img/apple-touch-icon.png">
-<link rel="apple-touch-icon" sizes="72x72" href="img/apple-touch-icon-72x72.png">
-<link rel="apple-touch-icon" sizes="114x114" href="img/apple-touch-icon-114x114.png">
-<link rel="stylesheet" type="text/css"  href="css/bootstrap.css">
-<link rel="stylesheet" type="text/css" href="fonts/font-awesome/css/font-awesome.css">
-<link rel="stylesheet" type="text/css" href="css/style.css">
-<link rel="stylesheet" type="text/css" href="css/nivo-lightbox/nivo-lightbox.css">
-<link rel="stylesheet" type="text/css" href="css/nivo-lightbox/default.css">
-<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css?family=Lato:400,700" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css?family=Raleway:300,400,500,600,700,800,900" rel="stylesheet">
-<link href="css/ninja-slider.css" rel="stylesheet" type="text/css" />
-<script src="js/ninja-slider.js" type="text/javascript"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relationship Counselor AI</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 800px;
+            height: 90vh;
+            max-height: 700px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        .header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .messages-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            background: #f8f9fa;
+        }
+
+        .message {
+            margin-bottom: 16px;
+            display: flex;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .message.user {
+            justify-content: flex-end;
+        }
+
+        .message.counselor {
+            justify-content: flex-start;
+        }
+
+        .message-bubble {
+            max-width: 70%;
+            padding: 12px 16px;
+            border-radius: 12px;
+            font-size: 14px;
+            line-height: 1.5;
+            word-wrap: break-word;
+        }
+
+        .user .message-bubble {
+            background: #667eea;
+            color: white;
+            border-bottom-right-radius: 4px;
+        }
+
+        .counselor .message-bubble {
+            background: #e9ecef;
+            color: #333;
+            border-bottom-left-radius: 4px;
+        }
+
+        .timestamp {
+            font-size: 12px;
+            color: #999;
+            margin-top: 4px;
+        }
+
+        .input-section {
+            border-top: 1px solid #e9ecef;
+            padding: 16px 20px;
+            background: white;
+        }
+
+        .input-form {
+            display: flex;
+            gap: 8px;
+        }
+
+        input[type="text"] {
+            flex: 1;
+            padding: 12px 16px;
+            border: 1px solid #ddd;
+            border-radius: 24px;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 24px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: transform 0.2s, box-shadow 0.2s;
+            font-size: 14px;
+        }
+
+        button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .reset-btn {
+            background: #6c757d;
+            margin-top: 8px;
+            width: 100%;
+        }
+
+        .reset-btn:hover:not(:disabled) {
+            background: #5a6268;
+        }
+
+        .loading {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-style: italic;
+            color: #667eea;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            background: #667eea;
+            border-radius: 50%;
+            animation: bounce 1.4s infinite;
+        }
+
+        .dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes bounce {
+            0%, 80%, 100% {
+                transform: translateY(0);
+                opacity: 0.5;
+            }
+            40% {
+                transform: translateY(-10px);
+                opacity: 1;
+            }
+        }
+
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            border-left: 4px solid #f5c6cb;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                max-height: 100vh;
+            }
+
+            .message-bubble {
+                max-width: 85%;
+            }
+        }
+    </style>
 </head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>💜 Expert AI</h1>
+            <p>Ask questions about the conversation</p>
+        </div>
 
-<body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top">
-<nav id="menu" class="navbar navbar-default navbar-fixed-top">
-  <div class="container"> 
-      <div class="logo">
-        <div class="col-md-12 row">
-          <img src="img/USC.jpg">
+        <div class="messages-container" id="messagesContainer">
+            <div class="message counselor">
+                <div>
+                    <div class="message-bubble">
+                        👋 Hello! I'm your expert AI. I've reviewed the conversation between Alice and Bob. Feel free to ask me any questions about their  dynamics, communication patterns, or for advice on similar situations.
+                    </div>
+                    <div class="timestamp" id="timestamp0">Just now</div>
+                </div>
+            </div>
         </div>
-      </div>
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
-      <a href="#page-top"><img src="img/dornsife-black-red.png"class="navbar-brand page-scroll" href="#page-top" style="width:250px; height: 90px;"></a> </div>
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <ul class="nav navbar-nav navbar-right">
-        <li><a href="#programs" class="page-scroll">Departments/Programs</a></li>
-        <li><a href="#stories" class="page-scroll">Our Stories</a></li>
-        <li><a href="#portfolio" class="page-scroll">Scholarships</a></li>
-        <li><a href="#support_our_mission" class="page-scroll">Support Our Mission</a></li>
-        <li><a href="#contact" class="page-scroll">Contact</a></li>
-      </ul>
-    </div>
-  </div>
-</nav>
-<!-- Header -->
-<header id="header">
-  <div class="intro">
-    <div class="overlay">
-      <div class="container">
-        <div class="row">
-          <div class="col-md-8 col-md-offset-2 intro-text">
-            <iframe width="750" height="500" src="https://youtube.com/embed/lsSC2vx7zFQ">
-            </iframe>
-        </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</header>
 
-<!-- programs Section -->
-<div id="programs" class="text-center">
-  <div class="container">
-    <div class="col-md-10 col-md-offset-1 section-title">
-      <h2>Welcome To Experiental Learning</h2>
+        <div class="input-section">
+            <form class="input-form" id="chatForm">
+                <input
+                    type="text"
+                    id="userInput"
+                    placeholder="Type your question here..."
+                    autocomplete="off"
+                    required
+                />
+                <button type="submit" id="sendBtn">Send</button>
+            </form>
+            <button class="reset-btn" id="resetBtn">Clear Chat</button>
+        </div>
     </div>
-    <div class="row programs_img">
-      <div id="ninja-slider">
-        <div class="slider-inner">
-          <ul>
-            <li>
-              <div class="dp_content"> <img src="img/dp1.png">
-                <h3>The Joint Educational Project (JEP)</h3>
-                <p>Established in 1972, USC JEP is one of the oldest & largest service-learning progams in the US. Each year, more than 2,000 USC students enroll in one of JEP's service-learning, work-study, or volunteer programs. JEP offers opportunities in nearby schools, community-based organizations, health-care facilities & legal clinics. With over 60,000 past participants, JEP continues to draw students in by offering a combination of hands-on experience and reflective practice, enabling students to learn first-hand about the critical issues facing communities surrounding USC.</p>
-              </div>
-            </li>
-             <li>
-              <div class="dp_content"> <img src="img/dp2.png">
-                <h3>Office of Oversea Studies</h3>
-                <p>The Office of Overseas Studeis provides opportunities for students to study abroad for a semester or a year., Eligible students can choose among 55 academic programs in 29 countries. The 6-week summmer Pembroke-King's Prograamme at Cambridge University is also offered through this office. Financial aid and scholarships may be applied to the cost of semester and year programs.</p>
-              </div>
-            </li>
-             <li>
-              <div class="dp_content"> <img src="img/dp3.png">
-                <h3>Department of Physical Education</h3>
-                <p>This program at USC has a variety of opportunities for to improve general health and strength through fitness related and recreational activities classes. Courses are designed to introduce students to various aspects of health & physical education principles. Students experience a hands on learning environment by connecting theory & fundamental skill instruction with application of those skills. With this exposure, knowledge, and skill, students are engaged intellectually and physically and are better equipped to make choices regarding a healthy lifestyle.</p>
-              </div>
-            </li>
-             <li>
-              <div class="dp_content"> <img src="img/dp4.png">
-                <h3>The Levan Institute for Humanities and Ethics</h3>
-                <p>The Levan Institue for Humanities and Ethics is a center of student and faculty engagement in critical inquiry into the timeless values at the core of our humanity. The institute facilities multidisciplinary programs, events, forums, and student organiztions to promote moral reflection on the crucial issues of our time. Levan students are encouraged to make a positive impact across society and around the world.</p>
-              </div>
-            </li>
-             <li>
-              <div class="dp_content"> <img src="img/dp5.png">
-                <h3>USC Dornsife Off-Campus Short-Term Program</h3>
-                <p>USC Dornsife offers short-term academic programs in several different formats in both the United States and abroad. Students can take advantage of any one of our unique programmitic opportunities; "Spring Break", "Maymester", "Problems Without Passports" and "Department Summer Away" courses extend undergraduate learning outside the walls of the university to just about anywhere in the world. Students gain research experience, participate in problem-based learning courses, study in a forein country, and are able to add unique boost to future resumes.</p>
-              </div>
-            </li>
-             <li>
-              <div class="dp_content"> <img src="img/dp6.png">
-                <h3>Washington D.C. Semester Program</h3>
-                <p>Provides a unique, semester-long opportunity for USC students to study & work in the capital.Courses are drawn from areas with direct policy relevance such as foreign policy, politics, and the political process & economics. All students complete an internship with one of Washington's many policy-focused organizations, including government agencies, nongovernmental organizations, consulting firms and congressionakl offices. The D.C. program is open to students from all majors while mantaining a focus on practical policy.</p>
-              </div>
-            </li>
-             <li>
-              <div class="dp_content"> <img src="img/dp7.png">
-                <h3>Center for Active Learning and International Studies (CALIS)</h3>
-                <p>CALIS is an outreach project of the School of International Relations dedicated to advancing teaching excellence in international studies. Through our service-learning programs, USC students team-teach in local high schools and act as a driving force for academic innovation and socially relevant scholarship. As USC teams teach locally, CALIS is better able to reach globally to provide effective strategies and materials in international studies.</p>
-              </div>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-<!-- Stories Section -->
-<div id="stories" class="text-center">
-  <div class="container">
-    <div class="section-title">
-      <h2>Our Stories</h2>
-      <p class="our_stories_content">Here About What Others Are #Doing</p>
-    </div>
-    <div class="row">
-      <div class="col-md-3"> <img src="img/Interview_1.jpg" class="grow">
-        <div class="service-desc">
-          <br/>
-          <h3>Surviving the Zombie Apocalypse</h3>
-          <p class="fade">As an antidote to our technology-obsessed world, USC Dornsife offers a Maymester course that allows students to appreciate the age-old skills that form the basis of civilization.</p>
-        </div>
-      </div>
-      <div class="col-md-6"> <img src="img/Interview_2.jpg" class="grow">
-        <div class="service-desc">
-          <br/>
-          <h3>Bridge Building in Cuba</h3>
-          <p class="fade">Economics major Nicholas Mockabee, alongside fellow Trojans, explored Old Havana, rode in vintage American cars along the Malecón, Havana’s fabled seafront promenade, and experienced the beauty of the country’s architecture. Meeting journalists, artists, doctors, religious leaders, faculty, writers and musicians, students were able to explore issues related to international relations between Cuba and the U.S. and to learn more about Cuba’s universal health-care system and high literacy levels.</p>
-        </div>
-      </div>
-      <div class="col-md-3"> <img src="img/Interview_3.jpg" class="grow">
-        <div class="service-desc">
-          <br/>
-          <h3>Taking the Plunge</h3>
-          <p class="fade">Lauren Otaguro, a senior majoring in neuroscience and minoring in environmental studies took her studies further while traveling to Guam and Palau. While diving in the Pacific Islands, Lauren conducted research on the marine biology located in remote islands. Learn more about how she took her environmental studies education out of the classroom and into the water.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-<!-- Scholarships Section -->
-<div id="portfolio" class="text-center">
-  <div class="container">
-    <div class="section-title">
-      <h2>ScholarShips</h2>
-      <p>We All Have a Destination. We'll Help You Get There.</p>
-    </div>
-    <div class="row">
-      <div class="portfolio-items">
-        <div class="col-sm-6 col-md-4 col-lg-4">
-          <div class="portfolio-item">
-            <div class="hover-bg"> <a href="img/sc1.jpg" title="Established by anonymous donors. Funds will support student research in every field of study represented within USC Dornsife, with a special focus on projects that engage fundamental questions of human value, promote well-being or address significant social challenges. Awards based on merit. Students should have demonstrated record academic success and be viable candidates as Dornsife Scholars. Preference given to first generation students. Upon completion of projects, students to submit report." data-lightbox-gallery="gallery1">
-              <div class="hover-text">
-                <h4>Dean Howard Gillman Fund</h4>
-              </div>
-              <img src="img/sc1.jpg" class="img-responsive" alt="Project Title"> </a> </div>
-          </div>
-        </div>
-        <div class="col-sm-6 col-md-4 col-lg-4">
-          <div class="portfolio-item">
-            <div class="hover-bg"> <a href="img/sc2.jpg" title="This gift will be used provide need-based student support for the Problems Without Passports program courses either in the US or internationally. One award every year from current funds." data-lightbox-gallery="gallery1">
-              <div class="hover-text">
-                <h4>Eliza and Dean Cash Scholarship</h4>
-              </div>
-              <img src="img/sc2.jpg" class="img-responsive" alt="Project Title"> </a> </div>
-          </div>
-        </div>
-        <div class="col-sm-6 col-md-4 col-lg-4">
-          <div class="portfolio-item">
-            <div class="hover-bg"> <a href="img/sc3.jpg" title="The purpose of this gift is to support the USC Dornsife Civic Engagement Scholarship Fund, a current-usc fund whose purpose is to provide current undergraduate students in USC Dornsife with need-based scholarships that will enable them to participate in the Maymester or Problems Without Passport programs." data-lightbox-gallery="gallery1">
-              <div class="hover-text">
-                <h4>Civic Engagement Scholarship Fund</h4>
-              </div>
-              <img src="img/sc3.jpg" class="img-responsive" alt="Project Title"> </a> </div>
-          </div>
-        </div>
-        <div class="col-sm-6 col-md-4 col-lg-4">
-          <div class="portfolio-item">
-            <div class="hover-bg"> <a href="img/sc4.jpg" title="Declared major/minor -IR and who wants to participate in internships in Washington DC or outside US. 1st preference - internships with federal agencies, congressionakl offices on Capitol Hill and international organizations (World Bank, United Nations...). 2nd preference - internships with non-governmental organizations or think tanks. Not applicable - internships with major political parties or organizations that support partisan activities (Democratic Senatorial Campaign Committee, National Republican Senatorial Campaign Committee). Award can be used for travel, accomodations, stipends." data-lightbox-gallery="gallery1">
-              <div class="hover-text">
-                <h4>Jennifer and Walter Ladwig Civic Engagement Scholarship</h4>
-              </div>
-              <img src="img/sc4.jpg" class="img-responsive" alt="Project Title"> </a> </div>
-          </div>
-        </div>
-        <div class="col-sm-6 col-md-4 col-lg-4">
-          <div class="portfolio-item">
-            <div class="hover-bg"> <a href="img/sc5.jpg" title="A scholarship to support Maymesters and other summer programs" data-lightbox-gallery="gallery1">
-              <div class="hover-text">
-                <h4>Matt Krouse Scholarship</h4>
-              </div>
-              <img src="img/sc5.jpg" class="img-responsive" alt="Project Title"> </a> </div>
-          </div>
-        </div>
-        <div class="col-sm-6 col-md-4 col-lg-4">
-          <div class="portfolio-item">
-            <div class="hover-bg"> <a href="img/sc6.jpg" title="An Undergraduate Research Fund to support PWP" data-lightbox-gallery="gallery1">
-              <div class="hover-text">
-                <h4>The Nadie N Moseley Family Scholarship</h4>
-              </div>
-              <img src="img/sc6.jpg" class="img-responsive" alt="Project Title"> </a> </div>
-          </div>
-        </div>
-        <div class="col-sm-6 col-md-4 col-lg-4">
-          <div class="portfolio-item">
-            <div class="hover-bg"> <a href="img/sc7.jpg" title="This award will be granted to students in the USC Dana and David Dornsife Colloege of Letters, Arts, and Sciences who demonstrate financial need." data-lightbox-gallery="gallery1">
-              <div class="hover-text">
-                <h4>The Jane Randolph del Amo Endowed Student Aid Fund</h4>
-              </div>
-              <img src="img/sc7.jpg" class="img-responsive" alt="Project Title"> </a> </div>
-          </div>
-        </div>
-        <div class="col-sm-6 col-md-4 col-lg-4">
-          <div class="portfolio-item">
-            <div class="hover-bg"> <a href="img/sc8.jpg" title="Established by Archie Van and Lou Palmer to provide tuition assistance to students studying in the USC Dana and Dornsife College of Letters, Arts, and Sciences." data-lightbox-gallery="gallery1">
-              <div class="hover-text">
-                <h4>Archie Van and Lou Partner Scholarship</h4>
-              </div>
-              <img src="img/sc8.jpg" class="img-responsive" alt="Project Title"> </a> </div>
-          </div>
-        </div>
-          <div class="col-sm-6 col-md-4 col-lg-4">
-          <div class="portfolio-item">
-            <div class="hover-bg"> <a href="img/sc9.jpg" title="The Fisher Fellowship Program is the first program at USC Dornsife that enables students with financial needs to fully participate in the enrichment opportunities that are at the heart of the college. Students selected for this program will receive funding which may be used over a three-year period to participate in academic programs that involve international travel, field research, and service to various communities." data-lightbox-gallery="gallery1">
-              <div class="hover-text">
-                <h4>Fisher Fellows Scholar</h4>
-              </div>
-              <img src="img/sc9.jpg" class="img-responsive" alt="Project Title"> </a> </div>
-          </div>
-        </div>
-          <div class="col-sm-6 col-md-4 col-lg-4">
-          <div class="portfolio-item">
-            <div class="hover-bg"> <a href="img/sc10.jpg" title="A scholarship to distinguished undergraduate students pursuing life-changing discoveries through research." data-lightbox-gallery="gallery1">
-              <div class="hover-text">
-                <h4>USC Dornsife Discovery Scholar</h4>
-              </div>
-              <img src="img/sc10.jpg" class="img-responsive" alt="Project Title"> </a> </div>
-          </div>
-        </div>
-          <div class="col-sm-6 col-md-4 col-lg-4">
-          <div class="portfolio-item">
-            <div class="hover-bg"> <a href="img/sc11.jpg" title="Celebrating the connection of seemingly disparate fields of study. This endowment is reserved for those students who make their own paths in pursuit of truly unique breakthroughs." data-lightbox-gallery="gallery1">
-              <div class="hover-text">
-                <h4>USC Dornsife Rennisance Scholar</h4>
-              </div>
-              <img src="img/sc11.jpg" class="img-responsive" alt="Project Title"> </a> </div>
-          </div>
-        </div>
-        <div class="col-sm-6 col-md-4 col-lg-4">
-          <div class="portfolio-item">
-            <div class="hover-bg"> <a href="img/sc12.jpg" title="An endowment for undergraduate students who demonstrate a commitment to affecting change internationally." data-lightbox-gallery="gallery1">
-              <div class="hover-text">
-                <h4>USC Dornsife Global Scholar</h4>
-              </div>
-              <img src="img/sc12.jpg" class="img-responsive" alt="Project Title"> </a> </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-<!-- Support Our Mission Section -->
-<div id="support_our_mission">
-  <div class="container">
-    <div class="section-title text-center">
-      <h2>What We Do</h2>
-    </div>
-    <div class="row">
-      <div class="col-md-12">
-        <div class="testimonial">
-          <table class="what_tbl" align="center">
-            <tr>
-              <th>
-                <div class="call_to_action">CALL TO ACTION</div>
-              </th>
-              <th rowspan="2">
-                <div id="doughnutChart" class="chart"></div>
-              </th>
-              <th rowspan="2">
-                <div class="testimonial-content">
-                  <p>32 % of Dornsife students that choose to do a Maymester abroad.</p>
-                </div>
-              </th>
-            </tr>
-            <tr>
-              <td> 
-                <div class="testimonial-image"> <img src="img/call_to_action.jpg" alt=""> </div>
-                <div class="testimonial-content">
-                  <p>We enable our students to take what they learn in the classroom, 
-                    out in<br/> the real world where it matters the most.</p>
-                </div>
-              </td>
-            </tr>
-          </table>
-        </div>
-      </div>
-      <div class="col-md-12">  
-        <div class="testimonial">
-          <table>
-            <tr>
-              <td>
-                <div class="country_img"> <img src="img/Number29.png" alt=""> </div>
-              </td>
-              <td>
-                <div class="testimonial-content">
-                <h2>Countries Offered</h2>
-                <div class="testimonial-meta"> through the Office of Oversea Studies  </div>
-                </div>
-              </td>
-              <td>
-                <div class=""> <img src="img/map.jpg" alt=""> </div>
-              </td>
-            </tr>
-          </table>
-        </div>
-      </div>
-      <div class="col=md-12">
-        <div class="testimonial">
-          <table class="st_data">
-            <tr>
-              <td>
-                <p class="big_data_one">32</p> 
-              </td>
-              <td>
-                <p class="big_data_one">60,000</p> 
-              </td>
-              <td>
-                <p class="big_data_one">48</p> 
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <p class="medium_data">PARTNERING SCHOOLS, LAW FIRMS, HOSPITALS, AND NON-PROFITS</p>
-              </td>
-              <td>
-                <p class="medium_data">TOTAL JEP PARTICIPANTS</p>
-              </td>
-              <td>
-                <p class="medium_data">NUMBER OF MAJOR WORKS PUBLISHED BY DISTINGUISHED LECTURERS</p>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <p class="tbl_small_data">with the Joint Educational Project</p>
-              </td>
-              <td>
-                <p class="tbl_small_data">since its inception in 1972</p>
-              </td>
-              <td>
-                <p class="tbl_small_data">of The Levan Institute of Ethics and Humanities</p>
-              </td>
-            </tr>
-          </table>
-        </div>
-      </div>
-      <div class="col-md-12">
-        <div class="testimonial">
-          <table class="counter_student_data">
-            <tr>
-              <td>
-                <div class="student_img_single"> <img src="img/1_student.png" alt=""> </div>
-              </td>
-              <td>
-                <p>Did You Know?</p>
-                <p class="big_data"> 1 In 10</p> 
-                <p>students participate in JEP every semester</p>
-              </td>
-              <td>
-                <div class="student_img"> <img src="img/23_students.png" alt=""> </div>
-              </td>
-              <td>
-                <p class="big_data">23%</p> 
-                <p class="testimonial-content">Percentage of students working in the Capitol through our semester-long D.C. program</p>
-              </td>
-            </tr>
-          </table>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="testimonial">
-          <div class="support"> <img src="img/support.jpg"> </div>
-          <div class="medium_data"> Want to support our mission ? </div><br/>
-          <div class="donate_st" align="center"><a href="https://giveto.usc.edu/?fundid=9218358010,9218360015,9218358905,9218351002,9218360014&appealcode=WSFI0001&buttongen=1">DONATE</a></div>
-        </div>
-      </div>
-      <div class="col-md-2">
-      </div>
-      <div class="col-md-6">
-        <div class="connected_title"> Stay Connected</div><br/>
-        <div class="connected"><i class="fa fa-facebook"></i> USC Department of Experiental Learning </div>
-        <div class="connected"><i class="fa fa-twitter"></i> @ExperientialLearning </div>
-        <div class="connected"><i class="fa fa-instagram"></i> @ExperientialLearning </div>
-      </div>
-    </div>
-  </div>
-</div>
-<!-- Contact Section -->
-<div id="contact">
-  <div class="container">
-    <div class="row">
-        <div class="section-title">
-          <h2>Get In Touch</h2>
-        </div>
-       <div class="contact-item">
-        <table align="center">
-          <tr>
-            <th><i class="fa fa-map-marker"></i> Address</th>
-            <th><i class="fa fa-phone"></i> Phone</th>
-            <th><i class="fa fa-envelope-o"></i> Email</th>
-          </tr>
-          <tr>
-            <td>3601 Trousdale Parkway, Student Union 301 <br>
-          Los Angeles, CA 90089-0894</td>
-            <td>(213) 740-9033</td>
-            <td>gradsch@usc.edu</td>
-          </tr>
-        </table>
-      </div>
-      </div> 
-    <div class="col-md-12">
-      <div class="row">
-        <div class="social">
-          <ul>
-            <li><a href="https://www.facebook.com/usc/"><i class="fa fa-facebook"></i></a></li>
-            <li><a href="https://twitter.com/usc"><i class="fa fa-twitter"></i></a></li>
-            <li><a href="https://www.linkedin.com/school/3084/"><i class="fa fa-linkedin"></i></a></li>
-            <li><a href="https://www.instagram.com/uscedu/"><i class="fa fa-instagram"></i></a></li>
-            <li><a href="https://www.youtube.com/user/USC/"><i class="fa fa-youtube"></i></a></li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
 
-<script type="text/javascript" src="js/jquery.1.11.1.js"></script> 
-<script type="text/javascript" src="js/bootstrap.js"></script> 
-<script type="text/javascript" src="js/SmoothScroll.js"></script> 
-<script type="text/javascript" src="js/nivo-lightbox.js"></script> 
-<script type="text/javascript" src="js/jqBootstrapValidation.js"></script> 
-<script type="text/javascript" src="js/contact_me.js"></script> 
-<script type="text/javascript" src="js/main.js"></script>
+    <script>
+        const API_BASE_URL = 'http://localhost:8000';
+        const messagesContainer = document.getElementById('messagesContainer');
+        const chatForm = document.getElementById('chatForm');
+        const userInput = document.getElementById('userInput');
+        const sendBtn = document.getElementById('sendBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        let messageCount = 1;
+
+        function getFormattedTime() {
+            const now = new Date();
+            return now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+        }
+
+        function addMessage(text, isUser = true) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${isUser ? 'user' : 'counselor'}`;
+
+            const bubbleDiv = document.createElement('div');
+            const messageContent = document.createElement('div');
+            messageContent.className = 'message-bubble';
+            messageContent.textContent = text;
+
+            const timestamp = document.createElement('div');
+            timestamp.className = 'timestamp';
+            timestamp.textContent = getFormattedTime();
+
+            bubbleDiv.appendChild(messageContent);
+            bubbleDiv.appendChild(timestamp);
+            messageDiv.appendChild(bubbleDiv);
+
+            messagesContainer.appendChild(messageDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            messageCount++;
+        }
+
+        function showLoading() {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message counselor';
+            messageDiv.id = 'loadingMessage';
+
+            const bubbleDiv = document.createElement('div');
+            const loadingDiv = document.createElement('div');
+            loadingDiv.className = 'loading';
+            loadingDiv.innerHTML = '<span>Counselor is thinking</span><div class="dot"></div><div class="dot"></div><div class="dot"></div>';
+
+            bubbleDiv.appendChild(loadingDiv);
+            messageDiv.appendChild(bubbleDiv);
+
+            messagesContainer.appendChild(messageDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        function removeLoading() {
+            const loadingMessage = document.getElementById('loadingMessage');
+            if (loadingMessage) {
+                loadingMessage.remove();
+            }
+        }
+
+        function showError(message) {
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'error';
+            errorDiv.textContent = `Error: ${message}`;
+            messagesContainer.insertBefore(errorDiv, messagesContainer.firstChild);
+            setTimeout(() => errorDiv.remove(), 5000);
+        }
+
+        async function sendMessage(e) {
+            e.preventDefault();
+
+            const message = userInput.value.trim();
+            if (!message) return;
+
+            // Add user message to UI
+            addMessage(message, true);
+            userInput.value = '';
+            sendBtn.disabled = true;
+
+            // Show loading indicator
+            showLoading();
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/ask`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ message: message }),
+                });
+
+                removeLoading();
+
+                if (!response.ok) {
+                    const error = await response.json();
+                    throw new Error(error.detail || 'Failed to get response');
+                }
+
+                const data = await response.json();
+                addMessage(data.counselor_response, false);
+            } catch (error) {
+                removeLoading();
+                showError(error.message);
+                console.error('Error:', error);
+            } finally {
+                sendBtn.disabled = false;
+                userInput.focus();
+            }
+        }
+
+        async function resetChat() {
+            if (confirm('Are you sure you want to clear the chat history?')) {
+                try {
+                    await fetch(`${API_BASE_URL}/api/reset`, {
+                        method: 'POST',
+                    });
+                    // Clear UI
+                    messagesContainer.innerHTML = '';
+                    addMessage('👋 Hello! I\'m your expert AI. I\'ve reviewed the conversation between Alice and Bob. Feel free to ask me any questions about their  dynamics, communication patterns, or for advice on similar situations.', false);
+                    messageCount = 1;
+                } catch (error) {
+                    showError('Failed to reset chat');
+                }
+            }
+        }
+
+        chatForm.addEventListener('submit', sendMessage);
+        resetBtn.addEventListener('click', resetChat);
+
+        // Focus input on load
+        userInput.focus();
+
+        // Check if backend is available
+        window.addEventListener('load', async () => {
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/health`);
+                if (!response.ok) {
+                    showError('Backend is not responding. Make sure the server is running on http://localhost:8000');
+                }
+            } catch (error) {
+                showError('Cannot connect to backend. Make sure the server is running on http://localhost:8000');
+            }
+        });
+    </script>
 </body>
 </html>
-<script type="text/javascript">
-  $(function(){
-  $("#doughnutChart").drawDoughnutChart([
-    { title: "Students", value : 115.2,  color: "#ff6e6e" },
-    { title: "Other", value:  244.8,   color: "#0c0058" },
-  ]);
-});
-;(function($, undefined) {
-  $.fn.drawDoughnutChart = function(data, options) {
-    var $this = this,
-      W = $this.width(),
-      H = $this.height(),
-      centerX = W/2,
-      centerY = H/2,
-      cos = Math.cos,
-      sin = Math.sin,
-      PI = Math.PI,
-      settings = $.extend({
-        segmentShowStroke : true,
-        segmentStrokeColor : "#000000",
-        segmentStrokeWidth : 1,
-        baseColor: "rgba(0,0,0,0.1)",
-        baseOffset: 1,
-        edgeOffset : 10,//offset from edge of $this
-        percentageInnerCutout : 75,
-        animation : true,
-        animationSteps : 90,
-        animationEasing : "easeInOutExpo",
-        animateRotate : true,
-        tipOffsetX: -8,
-        tipOffsetY: -45,
-        tipClass: "doughnutTip",
-        summaryClass: "doughnutSummary",
-        summaryTitle: "",
-        summaryTitleClass: "",
-        summaryNumberClass: "",
-        beforeDraw: function() {  },
-        afterDrawed : function() {  },
-        onPathEnter : function(e,data) {  },
-        onPathLeave : function(e,data) {  }
-      }, options),
-      animationOptions = {
-        linear : function (t) {
-          return t;
-        },
-        easeInOutExpo: function (t) {
-          var v = t<.5 ? 8*t*t*t*t : 1-8*(--t)*t*t*t;
-          return (v>1) ? 1 : v;
-        }
-      },
-      requestAnimFrame = function() {
-        return window.requestAnimationFrame ||
-          window.webkitRequestAnimationFrame ||
-          window.mozRequestAnimationFrame ||
-          window.oRequestAnimationFrame ||
-          window.msRequestAnimationFrame ||
-          function(callback) {
-            window.setTimeout(callback, 1000 / 60);
-          };
-      }();
-
-    settings.beforeDraw.call($this);
-
-    var $svg = $('<svg width="' + W + '" height="' + H + '" viewBox="0 0 ' + W + ' ' + H + '" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"></svg>').appendTo($this),
-        $paths = [],
-        easingFunction = animationOptions[settings.animationEasing],
-        doughnutRadius = Min([H / 2,W / 2]) - settings.edgeOffset,
-        cutoutRadius = doughnutRadius * (settings.percentageInnerCutout / 100),
-        segmentTotal = 0;
-
-    //Draw base doughnut
-    var baseDoughnutRadius = doughnutRadius + settings.baseOffset,
-        baseCutoutRadius = cutoutRadius - settings.baseOffset;
-    $(document.createElementNS('http://www.w3.org/2000/svg', 'path'))
-      .attr({
-        "d": getHollowCirclePath(baseDoughnutRadius, baseCutoutRadius),
-        "fill": settings.baseColor
-      })
-      .appendTo($svg);
-
-    //Set up pie segments wrapper
-    var $pathGroup = $(document.createElementNS('http://www.w3.org/2000/svg', 'g'));
-    $pathGroup.attr({opacity: 0}).appendTo($svg);
-
-    //Set up tooltip
-    var $tip = $('<div class="' + settings.tipClass + '" />').appendTo('body').hide(),
-        tipW = $tip.width(),
-        tipH = $tip.height();
-
-    //Set up center text area
-    var summarySize = (cutoutRadius - (doughnutRadius - cutoutRadius)) * 2,
-        $summary = $('<div class="' + settings.summaryClass + '" />')
-                   .appendTo($this)
-                   .css({ 
-                     width: summarySize + "px",
-                     height: summarySize + "px",
-                     "margin-left": -(summarySize / 2) + "px",
-                     "margin-top": -(summarySize / 2) + "px"
-                   });
-    var $summaryTitle = $('<p class="' + settings.summaryTitleClass + '">' + settings.summaryTitle + '</p>').appendTo($summary);
-    var $summaryNumber = $('<p class="' + settings.summaryNumberClass + '"></p>').appendTo($summary).css({opacity: 0});
-
-    for (var i = 0, len = data.length; i < len; i++) {
-      segmentTotal += data[i].value;
-      $paths[i] = $(document.createElementNS('http://www.w3.org/2000/svg', 'path'))
-        .attr({
-          "stroke-width": settings.segmentStrokeWidth,
-          "stroke": settings.segmentStrokeColor,
-          "fill": data[i].color,
-          "data-order": i
-        })
-        .appendTo($pathGroup)
-        .on("mouseenter", pathMouseEnter)
-        .on("mouseleave", pathMouseLeave)
-        .on("mousemove", pathMouseMove);
-    }
-
-    //Animation start
-    animationLoop(drawPieSegments);
-
-    //Functions
-    function getHollowCirclePath(doughnutRadius, cutoutRadius) {
-        //Calculate values for the path.
-        //We needn't calculate startRadius, segmentAngle and endRadius, because base doughnut doesn't animate.
-        var startRadius = -1.570,// -Math.PI/2
-            segmentAngle = 6.2831,// 1 * ((99.9999/100) * (PI*2)),
-            endRadius = 4.7131,// startRadius + segmentAngle
-            startX = centerX + cos(startRadius) * doughnutRadius,
-            startY = centerY + sin(startRadius) * doughnutRadius,
-            endX2 = centerX + cos(startRadius) * cutoutRadius,
-            endY2 = centerY + sin(startRadius) * cutoutRadius,
-            endX = centerX + cos(endRadius) * doughnutRadius,
-            endY = centerY + sin(endRadius) * doughnutRadius,
-            startX2 = centerX + cos(endRadius) * cutoutRadius,
-            startY2 = centerY + sin(endRadius) * cutoutRadius;
-        var cmd = [
-          'M', startX, startY,
-          'A', doughnutRadius, doughnutRadius, 0, 1, 1, endX, endY,//Draw outer circle
-          'Z',//Close path
-          'M', startX2, startY2,//Move pointer
-          'A', cutoutRadius, cutoutRadius, 0, 1, 0, endX2, endY2,//Draw inner circle
-          'Z'
-        ];
-        cmd = cmd.join(' ');
-        return cmd;
-    };
-    function pathMouseEnter(e) {
-      var order = $(this).data().order;
-      $tip.text(data[order].title + ": " + data[order].value)
-          .fadeIn(200);
-      settings.onPathEnter.apply($(this),[e,data]);
-    }
-    function pathMouseLeave(e) {
-      $tip.hide();
-      settings.onPathLeave.apply($(this),[e,data]);
-    }
-    function pathMouseMove(e) {
-      $tip.css({
-        top: e.pageY + settings.tipOffsetY,
-        left: e.pageX - $tip.width() / 2 + settings.tipOffsetX
-      });
-    }
-    function drawPieSegments (animationDecimal) {
-      var startRadius = -PI / 2,//-90 degree
-          rotateAnimation = 1;
-      if (settings.animation && settings.animateRotate) rotateAnimation = animationDecimal;//count up between0~1
-
-      drawDoughnutText(animationDecimal, segmentTotal);
-
-      $pathGroup.attr("opacity", animationDecimal);
-
-      //If data have only one value, we draw hollow circle(#1).
-      if (data.length === 1 && (4.7122 < (rotateAnimation * ((data[0].value / segmentTotal) * (PI * 2)) + startRadius))) {
-        $paths[0].attr("d", getHollowCirclePath(doughnutRadius, cutoutRadius));
-        return;
-      }
-      for (var i = 0, len = data.length; i < len; i++) {
-        var segmentAngle = rotateAnimation * ((data[i].value / segmentTotal) * (PI * 2)),
-            endRadius = startRadius + segmentAngle,
-            largeArc = ((endRadius - startRadius) % (PI * 2)) > PI ? 1 : 0,
-            startX = centerX + cos(startRadius) * doughnutRadius,
-            startY = centerY + sin(startRadius) * doughnutRadius,
-            endX2 = centerX + cos(startRadius) * cutoutRadius,
-            endY2 = centerY + sin(startRadius) * cutoutRadius,
-            endX = centerX + cos(endRadius) * doughnutRadius,
-            endY = centerY + sin(endRadius) * doughnutRadius,
-            startX2 = centerX + cos(endRadius) * cutoutRadius,
-            startY2 = centerY + sin(endRadius) * cutoutRadius;
-        var cmd = [
-          'M', startX, startY,//Move pointer
-          'A', doughnutRadius, doughnutRadius, 0, largeArc, 1, endX, endY,//Draw outer arc path
-          'L', startX2, startY2,//Draw line path(this line connects outer and innner arc paths)
-          'A', cutoutRadius, cutoutRadius, 0, largeArc, 0, endX2, endY2,//Draw inner arc path
-          'Z'//Cloth path
-        ];
-        $paths[i].attr("d", cmd.join(' '));
-        startRadius += segmentAngle;
-      }
-    }
-    function drawDoughnutText(animationDecimal, segmentTotal) {
-      $summaryNumber
-        .css({opacity: animationDecimal})
-        .text((segmentTotal * animationDecimal).toFixed(1));
-    }
-    function animateFrame(cnt, drawData) {
-      var easeAdjustedAnimationPercent =(settings.animation)? CapValue(easingFunction(cnt), null, 0) : 1;
-      drawData(easeAdjustedAnimationPercent);
-    }
-    function animationLoop(drawData) {
-      var animFrameAmount = (settings.animation)? 1 / CapValue(settings.animationSteps, Number.MAX_VALUE, 1) : 1,
-          cnt =(settings.animation)? 0 : 1;
-      requestAnimFrame(function() {
-          cnt += animFrameAmount;
-          animateFrame(cnt, drawData);
-          if (cnt <= 1) {
-            requestAnimFrame(arguments.callee);
-          } else {
-            settings.afterDrawed.call($this);
-          }
-      });
-    }
-    function Max(arr) {
-      return Math.max.apply(null, arr);
-    }
-    function Min(arr) {
-      return Math.min.apply(null, arr);
-    }
-    function isNumber(n) {
-      return !isNaN(parseFloat(n)) && isFinite(n);
-    }
-    function CapValue(valueToCap, maxValue, minValue) {
-      if (isNumber(maxValue) && valueToCap > maxValue) return maxValue;
-      if (isNumber(minValue) && valueToCap < minValue) return minValue;
-      return valueToCap;
-    }
-    return $this;
-  };
-})(jQuery);
-</script>
-
-<script type="text/javascript">
-$(document).ready(function() {
- 
-  $("#owl-demo").owlCarousel({
- 
-      autoPlay: 3000, //Set AutoPlay to 3 seconds
- 
-      items : 4,
-      itemsDesktop : [1199,3],
-      itemsDesktopSmall : [979,3]
- 
-  });
-});</script>
